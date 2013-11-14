@@ -157,6 +157,14 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window):
 		#pygame.display.flip()
 		time.sleep(.5)
 
+def run():
+	print fracvar.get()
+	if fracvar.get() == 'Dragon':
+		dragon(200, 300, 200, 17, window)
+	elif fracvar.get() == 'Koch':
+		kochcurve(20, 400, 200, 6, window)
+	elif fracvar.get() == 'Koch sqr':
+		sqrkochcurve(20, 400, 200, 6, window)
 
 pygame.init()
 window = pygame.display.set_mode((640,480))
@@ -188,9 +196,16 @@ mainframe.grid(column=0, row=0, sticky="n, w, e, s")
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
-ttk.Button(mainframe, text="Dragon", command=lambda: dragon(200, 300, 200, 17, window)).grid(column=1, row=1, sticky="w")
-ttk.Button(mainframe, text="Koch", command=lambda: kochcurve(20, 400, 200, 6, window)).grid(column=1, row=2, sticky="w")
-ttk.Button(mainframe, text="Koch sqr", command=lambda: sqrkochcurve(20, 400, 200, 6, window)).grid(column=1, row=3, sticky="w")
+#ttk.Button(mainframe, text="Dragon", command=lambda: dragon(200, 300, 200, 17, window)).grid(column=1, row=1, sticky="w")
+#ttk.Button(mainframe, text="Koch", command=lambda: kochcurve(20, 400, 200, 6, window)).grid(column=1, row=2, sticky="w")
+#ttk.Button(mainframe, text="Koch sqr", command=lambda: sqrkochcurve(20, 400, 200, 6, window)).grid(column=1, row=3, sticky="w")
+fractals = ('Dragon', 'Koch', 'Koch sqr')
+fracvar = Tkinter.StringVar()
+frac = ttk.Combobox(mainframe, textvariable=fracvar, values=fractals, state='readonly').grid(column=1, row=1, sticky='w')
+ttk.Button(mainframe, text='Go!', command=run).grid(column=2, row=1, sticky='w')
+#frac['values'] = ['Dragon', 'Koch', 'Koch sqr']
+#frac['state'] = ('readonly')
+
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 
 root.mainloop()
