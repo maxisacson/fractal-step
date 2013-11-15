@@ -5,7 +5,7 @@ import time
 import Tkinter
 import ttk
 
-class turtle(object):
+class turtle(object): #drawing automaton
 	angle = 0
 	draw = True
 	def __init__(self, window, xinit, yinit):
@@ -43,7 +43,7 @@ class turtle(object):
 	def printAngle(self):
 		print str(-math.degrees(self.angle))
 
-def dragon(x_start, y_start, in_dist, niter, in_window):
+def dragon(x_start, y_start, in_dist, niter, in_window): #dragon curve
 	window = in_window
 	t = turtle(window, x_start, y_start)
 	angle = 90
@@ -52,10 +52,6 @@ def dragon(x_start, y_start, in_dist, niter, in_window):
 	steps = [-1]
 	n = niter
 	for i in range(n): #iterations of fractal
-	#	if i == (n-1):
-	#		t.setDraw(True)
-
-	#	T0 = time.clock()
 		window.fill((0,0,0))
 		t.move(dist) #initial step before rotation
 		for s in steps: #number of step for given iteration
@@ -75,11 +71,9 @@ def dragon(x_start, y_start, in_dist, niter, in_window):
 		tmp_steps = [k*-1 for k in steps[::-1]]
 		steps = steps[:] + [-1] + tmp_steps[:] #update new steps
 		dist = dist/math.sqrt(2) #scale down by sqrt(2)
-	#	pygame.display.flip()
-	#	T = time.clock() - T0
 		time.sleep(0.5)	
 
-def sqrkochcurve(x_start, y_start, in_dist, niter, in_window):
+def sqrkochcurve(x_start, y_start, in_dist, niter, in_window): #square koch curve (quadratic type 1)
 	window = in_window
 	t = turtle(window, x_start, y_start)
 	dist = in_dist
@@ -107,24 +101,12 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window):
 			tmp_steps = tmp_steps[:] + steps[:] + [p]
 
 		tmp_steps = tmp_steps[:] + steps[:]
-	#	for j in range(5):
-	#		if j == 0:
-	#			tmp_steps = tmp_steps[:] + steps[:] + [1]
-	#		elif j == 1:
-	#			tmp_steps = tmp_steps[:] + steps[:] + [-1]
-	#		elif j == 2:
-	#			tmp_steps = tmp_steps[:] + steps[:] + [-1]
-	#		elif j == 3:
-	#			tmp_steps = tmp_steps[:] + steps[:] + [1]
-	#		elif j == 4:
-	#			tmp_steps = tmp_steps[:] + steps[:]	
 
 		steps = tmp_steps[:]
 		dist = float(dist)/3.
-		#pygame.display.flip()
 		time.sleep(.5)
 
-def kochcurve(x_start, y_start, in_dist, niter, in_window):
+def kochcurve(x_start, y_start, in_dist, niter, in_window): #standard koch curve
 	window = in_window
 	t = turtle(window, x_start, y_start)
 	dist = in_dist
@@ -156,19 +138,14 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window):
 			tmp_steps = tmp_steps[:] + steps[:] + [p]
 
 		tmp_steps = tmp_steps[:] + steps[:]
-#		for j in range(4):
-#			if j < 3:
-#				tmp_steps = tmp_steps[:] + steps[:] + [(-1)**j]
-#			elif j == 3:
-#				tmp_steps = tmp_steps[:] + steps[:]
 
 		steps = tmp_steps[:]
 		dist = float(dist)/3.
-		#pygame.display.flip()
 		time.sleep(.5)
 
-def run():
-	print fracvar.get()
+def run(): #this runs the drawing methods, called from run button in gui
+	pygame.init() #initialize pygame
+	window = pygame.display.set_mode((640,480)) #set display window
 	if fracvar.get() == 'Dragon':
 		dragon(200, 300, 200, 17, window)
 	elif fracvar.get() == 'Koch':
@@ -176,27 +153,9 @@ def run():
 	elif fracvar.get() == 'Koch sqr':
 		sqrkochcurve(20, 400, 200, 6, window)
 
-pygame.init()
-window = pygame.display.set_mode((640,480))
+## Initialization and stuff ##
 
-#x_start = 200
-#y_start = 300
-
-#while True:
-#	dragon(200, 300, 200, 17, window)
-#	sqrkochcurve(20, 400, 200, 6, window)
-#	kochcurve(20, 400, 200, 6, window)
-#	T = time.clock()
-#	while True:
-#		for event in pygame.event.get():
-#				if event.type == pygame.QUIT:
-#					pygame.quit()
-#					sys.exit()
-#				else:
-#					pass
-
-#		if (time.clock() - T) >= 5.:
-#			break
+fractals = ('Dragon', 'Koch', 'Koch sqr') #list of fractals available
 
 root = Tkinter.Tk()
 root.title("Max magiska laada")
@@ -206,16 +165,12 @@ mainframe.grid(column=0, row=0, sticky="n, w, e, s")
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
-#ttk.Button(mainframe, text="Dragon", command=lambda: dragon(200, 300, 200, 17, window)).grid(column=1, row=1, sticky="w")
-#ttk.Button(mainframe, text="Koch", command=lambda: kochcurve(20, 400, 200, 6, window)).grid(column=1, row=2, sticky="w")
-#ttk.Button(mainframe, text="Koch sqr", command=lambda: sqrkochcurve(20, 400, 200, 6, window)).grid(column=1, row=3, sticky="w")
-fractals = ('Dragon', 'Koch', 'Koch sqr')
 fracvar = Tkinter.StringVar()
 frac = ttk.Combobox(mainframe, textvariable=fracvar, values=fractals, state='readonly').grid(column=1, row=1, sticky='w')
 ttk.Button(mainframe, text='Go!', command=run).grid(column=2, row=1, sticky='w')
-#frac['values'] = ['Dragon', 'Koch', 'Koch sqr']
-#frac['state'] = ('readonly')
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
+
+## Main stuff ##
 
 root.mainloop()
