@@ -84,6 +84,7 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window):
 	t = turtle(window, x_start, y_start)
 	dist = in_dist
 	steps = [1, -1, -1, 1]
+	pattern = steps[:]
 	n = niter
 	for i in range(n):
 		window.fill((0,0,0))
@@ -102,17 +103,21 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window):
 		t.setPos(x_start, y_start)
 		t.setAngle(0)
 		tmp_steps = []
-		for j in range(5):
-			if j == 0:
-				tmp_steps = tmp_steps[:] + steps[:] + [1]
-			elif j == 1:
-				tmp_steps = tmp_steps[:] + steps[:] + [-1]
-			elif j == 2:
-				tmp_steps = tmp_steps[:] + steps[:] + [-1]
-			elif j == 3:
-				tmp_steps = tmp_steps[:] + steps[:] + [1]
-			elif j == 4:
-				tmp_steps = tmp_steps[:] + steps[:]	
+		for p in pattern:
+			tmp_steps = tmp_steps[:] + steps[:] + [p]
+
+		tmp_steps = tmp_steps[:] + steps[:]
+	#	for j in range(5):
+	#		if j == 0:
+	#			tmp_steps = tmp_steps[:] + steps[:] + [1]
+	#		elif j == 1:
+	#			tmp_steps = tmp_steps[:] + steps[:] + [-1]
+	#		elif j == 2:
+	#			tmp_steps = tmp_steps[:] + steps[:] + [-1]
+	#		elif j == 3:
+	#			tmp_steps = tmp_steps[:] + steps[:] + [1]
+	#		elif j == 4:
+	#			tmp_steps = tmp_steps[:] + steps[:]	
 
 		steps = tmp_steps[:]
 		dist = float(dist)/3.
@@ -124,6 +129,7 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window):
 	t = turtle(window, x_start, y_start)
 	dist = in_dist
 	steps = [1, -1, 1]
+	pattern = steps[:]
 	n = niter
 	for i in range(n):
 		window.fill((0,0,0))
@@ -146,11 +152,15 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window):
 		t.setPos(x_start, y_start)
 		t.setAngle(0)
 		tmp_steps = []
-		for j in range(4):
-			if j < 3:
-				tmp_steps = tmp_steps[:] + steps[:] + [(-1)**j]
-			elif j == 3:
-				tmp_steps = tmp_steps[:] + steps[:]
+		for p in pattern:
+			tmp_steps = tmp_steps[:] + steps[:] + [p]
+
+		tmp_steps = tmp_steps[:] + steps[:]
+#		for j in range(4):
+#			if j < 3:
+#				tmp_steps = tmp_steps[:] + steps[:] + [(-1)**j]
+#			elif j == 3:
+#				tmp_steps = tmp_steps[:] + steps[:]
 
 		steps = tmp_steps[:]
 		dist = float(dist)/3.
