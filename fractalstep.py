@@ -153,9 +153,13 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #standard 
 def run(*args): #this runs the drawing methods, called from run button in gui
 	pygame.init() #initialize pygame
 	window = pygame.display.set_mode((640,480)) #set display window
-	print 'color:'
-	for x in color:
-		print str(x)
+
+	# Set options #
+	if (red.get() != '' and green.get() != '' and blue.get() != ''):
+		if (int(red.get()) < 256 and int(green.get()) < 256 and int(blue.get()) < 256):
+			if (int(red.get()) > -1 and int(green.get()) > -1 and int(blue.get()) > -1):
+				global color
+				color = (int(red.get()), int(green.get()), int(blue.get()))
 
 	if fracvar.get() == 'Dragon':
 		dragon(200, 300, 200, 17, window, color)
@@ -166,26 +170,11 @@ def run(*args): #this runs the drawing methods, called from run button in gui
 
 def options(*args): #set fractal specific options
 	s = fracvar.get()
+	
+
+
 	if s == 'Dragon':
-		red = Tkinter.StringVar()
-		green = Tkinter.StringVar()
-		blue = Tkinter.StringVar()
-
-		red_entry = ttk.Entry(optframe, textvariable=red, width=3)
-		red_entry.grid(column=0, row=0, sticky='w')
-
-		green_entry = ttk.Entry(optframe, textvariable=green, width=3)
-		green_entry.grid(column=1, row=0, sticky='w')
-
-		blue_entry = ttk.Entry(optframe, textvariable=blue, width=3)
-		blue_entry.grid(column=2, row=0, sticky='w')
-
-		if (red.get() != '' and green.get() != '' and blue.get() != ''):
-			if (int(red.get()) < 256 and int(green.get()) < 256 and int(blue.get()) < 256):
-				if (int(red.get()) > -1 and int(green.get()) > -1 and int(blue.get()) > -1):
-					global color
-					color = (int(red.get()), int(green.get()), int(blue.get()))
-
+		pass
 	elif s == 'Koch':
 		pass
 	elif s == 'Koch sqr':
@@ -195,10 +184,16 @@ def options(*args): #set fractal specific options
 
 ## Initialization and stuff ##
 
-fractals = ('Dragon', 'Koch', 'Koch sqr') #list of fractals available
-color = (255, 255, 255) #default color
-
 root = Tkinter.Tk()
+fractals = ('Dragon', 'Koch', 'Koch sqr') #list of fractals available
+
+# Fractal independent options, such as color #
+color = (255, 255, 255) #default color
+red = Tkinter.StringVar()
+blue = Tkinter.StringVar()
+green = Tkinter.StringVar()
+
+## GUI ##
 root.title("Max magiska laada")
 
 mainframe = ttk.Frame(root, padding="3 3 12 12")
@@ -206,11 +201,26 @@ mainframe.grid(column=0, row=0, sticky="n, w, e, s")
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
+# Options section #
 optframe = ttk.Frame(mainframe, padding="3 3 12 12")
 optframe.grid(column=0, row=1, sticky="n, w")
 optframe.columnconfigure(0, weight=1)
 optframe.rowconfigure(0, weight=1)
 
+red_entry = ttk.Entry(optframe, textvariable=red, width=3)
+red_entry.grid(column=1, row=0, sticky='w')
+red_label = ttk.Label(optframe, text='R:').grid(column=0, row=0, sticky='w')
+
+green_entry = ttk.Entry(optframe, textvariable=green, width=3)
+green_entry.grid(column=3, row=0, sticky='w')
+green_label = ttk.Label(optframe, text='G:').grid(column=2, row=0, sticky='w')
+
+blue_entry = ttk.Entry(optframe, textvariable=blue, width=3)
+blue_entry.grid(column=5, row=0, sticky='w')
+blue_label = ttk.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
+
+
+# Run section #
 fracvar = Tkinter.StringVar()
 frac = ttk.Combobox(mainframe, textvariable=fracvar)
 frac.grid(column=0, row=0, sticky='w')
