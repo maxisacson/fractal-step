@@ -66,7 +66,7 @@ def dragon(x_start, y_start, in_dist, niter, in_window, in_color): #dragon curve
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
-					sys.exit()
+					return
 				else:
 					pass
 
@@ -96,7 +96,7 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #square
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
-					sys.exit()
+					return
 				else:
 					pass
 
@@ -134,7 +134,7 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #standard 
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
-					sys.exit()
+					return
 				else:
 					pass
 
@@ -170,9 +170,6 @@ def run(*args): #this runs the drawing methods, called from run button in gui
 
 def options(*args): #set fractal specific options
 	s = fracvar.get()
-	
-
-
 	if s == 'Dragon':
 		pass
 	elif s == 'Koch':
