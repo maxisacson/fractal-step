@@ -7,6 +7,7 @@ Max Isacson
 
 TODO
 ----
+- Come up with a catchier name
 - ~~Add color selection~~
 - Add option to set random color
 - Add option to set random color for each iteration
