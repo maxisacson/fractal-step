@@ -4,6 +4,7 @@ import math
 import time
 import Tkinter
 import ttk
+import random
 
 class turtle(object): #drawing automaton
 	angle = 0
@@ -155,11 +156,15 @@ def run(*args): #this runs the drawing methods, called from run button in gui
 	window = pygame.display.set_mode((640,480)) #set display window
 
 	# Set options #
-	if (red.get() != '' and green.get() != '' and blue.get() != ''):
-		if (int(red.get()) < 256 and int(green.get()) < 256 and int(blue.get()) < 256):
-			if (int(red.get()) > -1 and int(green.get()) > -1 and int(blue.get()) > -1):
-				global color
-				color = (int(red.get()), int(green.get()), int(blue.get()))
+	if rand_color.get() == True:
+		color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+	else:
+		if (red.get() != '' and green.get() != '' and blue.get() != ''):
+			if (int(red.get()) < 256 and int(green.get()) < 256 and int(blue.get()) < 256):
+				if (int(red.get()) > -1 and int(green.get()) > -1 and int(blue.get()) > -1):
+					color = (int(red.get()), int(green.get()), int(blue.get()))
+		else:
+			color=(255, 255, 255)
 
 	if fracvar.get() == 'Dragon':
 		dragon(200, 300, 200, 17, window, color)
@@ -190,6 +195,9 @@ red = Tkinter.StringVar()
 blue = Tkinter.StringVar()
 green = Tkinter.StringVar()
 
+global rand_color
+rand_color = Tkinter.BooleanVar()
+
 ## GUI ##
 root.title("Max magiska laada")
 
@@ -216,6 +224,8 @@ blue_entry = ttk.Entry(optframe, textvariable=blue, width=3)
 blue_entry.grid(column=5, row=0, sticky='w')
 blue_label = ttk.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
 
+random_color_checkbox = ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
+random_color_checkbox.grid(column=6, row=0, sticky='w')
 
 # Run section #
 fracvar = Tkinter.StringVar()

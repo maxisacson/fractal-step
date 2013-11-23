@@ -9,9 +9,9 @@ TODO
 ----
 - Come up with a catchier name
 - ~~Add color selection~~
-- Add option to set random color
+- ~~Add option to set random color~~
 - Add option to set random color for each iteration
-- Add optione to set background color maybe
+- Add option to set background color maybe
 - Add exit button
 - Add pause button
 - Add "make your own fractal" feature using L-systems
@@ -20,6 +20,7 @@ TODO
 - Add option to set time between iterations
 - Add option to set time before starting over with the first iteration
 - More stuff probably
+- Fix bug where if the fractal is done with its last iteration, you can't close the drawing window, forcing you to quit the application
 
 Fractals to add
 ---------------
