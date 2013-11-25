@@ -6,7 +6,8 @@ import Tkinter
 import ttk
 import random
 
-class turtle(object): #drawing automaton
+class turtle(object):
+	"""drawing automaton"""
 	angle = 0
 	draw = True
 	def __init__(self, window, xinit, yinit, in_color = (255, 255, 255)):
@@ -48,7 +49,8 @@ class turtle(object): #drawing automaton
 	def printAngle(self):
 		print str(-math.degrees(self.angle))
 
-def dragon(x_start, y_start, in_dist, niter, in_window, in_color): #dragon curve
+def dragon(x_start, y_start, in_dist, niter, in_window, in_color):
+	"""dragon curve"""
 	window = in_window
 	color = in_color
 	t = turtle(window, x_start, y_start, color)
@@ -79,7 +81,8 @@ def dragon(x_start, y_start, in_dist, niter, in_window, in_color): #dragon curve
 		dist = dist/math.sqrt(2) #scale down by sqrt(2)
 		time.sleep(0.5)	
 
-def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #square koch curve (quadratic type 1)
+def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color):
+	"""square koch curve (quadratic type 1)"""
 	window = in_window
 	color = in_color
 	t = turtle(window, x_start, y_start, in_color)
@@ -113,7 +116,8 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #square
 		dist = float(dist)/3.
 		time.sleep(.5)
 
-def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #standard koch curve
+def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color):
+	"""standard koch curve"""
 	window = in_window
 	color = in_color
 	t = turtle(window, x_start, y_start, color)
@@ -151,7 +155,8 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color): #standard 
 		dist = float(dist)/3.
 		time.sleep(.5)
 
-def run(*args): #this runs the drawing methods, called from run button in gui
+def run(*args):
+	"""this runs the drawing methods, called from run button in gui"""
 	pygame.init() #initialize pygame
 	window = pygame.display.set_mode((640,480)) #set display window
 
@@ -173,7 +178,8 @@ def run(*args): #this runs the drawing methods, called from run button in gui
 	elif fracvar.get() == 'Koch sqr':
 		sqrkochcurve(20, 400, 200, 6, window, color)
 
-def options(*args): #set fractal specific options
+def options(*args):
+	"""set fractal specific options"""
 	s = fracvar.get()
 	if s == 'Dragon':
 		pass
