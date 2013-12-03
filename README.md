@@ -10,7 +10,7 @@ TODO
 - Come up with a catchier name
 - ~~Add color selection~~
 - ~~Add option to set random color~~
-- Add option to set random color for each iteration
+- ~~Add option to set random color for each iteration~~ Implement this in a better way
 - Add option to set background color maybe
 - Add exit button
 - Add pause button
