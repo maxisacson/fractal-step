@@ -96,6 +96,10 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_col
 	n = niter
 	for i in range(n):
 		window.fill((0,0,0))
+		if iter_color == True:
+			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+			t.setColor(color)
+
 		t.move(dist)
 		for s in steps:
 			t.rotateBy(s*90)
@@ -131,6 +135,10 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_color)
 	n = niter
 	for i in range(n):
 		window.fill((0,0,0))
+		if iter_color == True:
+			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+			t.setColor(color)
+
 		t.move(dist)
 		for s in steps:
 			if s == -1:
