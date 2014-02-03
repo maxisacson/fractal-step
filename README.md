@@ -31,3 +31,8 @@ Fractals to add
 - Fractal plant
 - Cantor dust (maybe boring, but still a pretty fundamental fractal)
 - Maybe some other cool stuff, like all roots of polynomials and such
+
+Other cool stuff to add
+-----------------------
+
+- Computation of pi (Leibniz vs. Monte Carlo, etc.)
