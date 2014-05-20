@@ -30,6 +30,7 @@ Fractals to add
 - Sierpinski gasket (could be both as an L-system and the normal one)
 - Fractal plant
 - Cantor dust (maybe boring, but still a pretty fundamental fractal)
+- Newton fractals
 - Maybe some other cool stuff, like all roots of polynomials and such
 
 Other cool stuff to add
