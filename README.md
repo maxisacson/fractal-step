@@ -20,14 +20,15 @@ TODO
 - Add option to set time between iterations
 - Add option to set time before starting over with the first iteration
 - More stuff probably
-- Fix bug where if the fractal is done with its last iteration, you can't close the drawing window, forcing you to quit the application
+- Fix bug where if the fractal is done with its last iteration, you can not close the drawing window, forcing you to quit the application
+- Add option to make rainbow fractals (fetch the color from a given smooth curve in the RGB space)
 
 Fractals to add
 ---------------
 
 - Mandelbrot set
 - Julia set
-- Sierpinski gasket (could be both as an L-system and the normal one)
+- Sierpinski gasket (L-system)
 - Fractal plant
 - Cantor dust (maybe boring, but still a pretty fundamental fractal)
 - Newton fractals
