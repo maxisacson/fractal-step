@@ -1,23 +1,24 @@
-import sys
 import pygame
 import math
 import time
-import Tkinter
-import ttk
+import tkinter
+import tkinter.ttk
 import random
+
 
 class turtle(object):
 	"""drawing automaton"""
 	angle = 0
 	draw = True
-	def __init__(self, window, xinit, yinit, in_color = (255, 255, 255)):
+
+	def __init__(self, window, xinit, yinit, in_color=(255, 255, 255)):
 		self.window = window
 		self.x = xinit
 		self.y = yinit
 		self.color = in_color
-	
+
 	def setDraw(self, var):
-		self.draw = var	
+		self.draw = var
 
 	def setPos(self, newx, newy):
 		self.x = newx
@@ -39,15 +40,65 @@ class turtle(object):
 			pygame.draw.line(self.window, self.color, (self.x, self.y), (x_new, y_new), 1)
 		else:
 			pass
-
 		self.x = x_new
 		self.y = y_new
 
 	def printPos(self):
-		print "(" + str(self.x) + ", " + str(self.y) + ")"
+		print("(" + str(self.x) + ", " + str(self.y) + ")")
 
 	def printAngle(self):
-		print str(-math.degrees(self.angle))
+		print(str(-math.degrees(self.angle)))
+
+	def draw_circle(self, radius):
+		pygame.draw.circle(self.window, self.color, (self.x, self.y), radius)
+
+
+def pascal_sierpinski(niter, in_window, in_color, iter_color, x_start=2, y_start=2):
+	"""sierpinski triangle using pascals triangle"""
+	window = in_window
+	n = niter
+	line_height = 6
+	char_width = 6
+	color = in_color
+	t = turtle(window, x_start, y_start, color)
+
+	def pascal(n):
+		pas = [[1], [1, 1], [1, 2, 1]]
+		for y in range(n-3):
+			nth = [1]
+			last = pas[len(pas)-1]
+			for x in range(len(last)-1):
+				nth.append(last[x]+last[x+1])
+			nth.append(1)
+			pas.append(nth)
+		return pas
+
+	def even_odd(pascal):
+		for p in pascal:
+			for x, b in enumerate(p):
+				if b % 2:
+					p[x] = "."
+		return pascal
+	pastri = even_odd(pascal(n))
+	irtsap = pastri[::-1]
+	for x, row in enumerate(irtsap):
+		irtsap[x] = row[::-1]
+	pygame.display.flip()
+	for x, row in enumerate(pastri):
+		row += irtsap[x]
+		for ele in row:
+			if ele != ".":
+				t.draw_circle(2)
+				pygame.display.flip()
+			if iter_color and ele != ".":
+				color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+				t.setColor(color)
+			x_start += char_width
+			t.setPos(x_start, y_start)
+		y_start += line_height
+		x_start = 2
+		t.setPos(x_start, y_start)
+
 
 def dragon(x_start, y_start, in_dist, niter, in_window, in_color, iter_color):
 	"""dragon curve"""
@@ -59,14 +110,14 @@ def dragon(x_start, y_start, in_dist, niter, in_window, in_color, iter_color):
 	t.setAngle(angle)
 	steps = [-1]
 	n = niter
-	for i in range(n): #iterations of fractal
-		window.fill((0,0,0))
-		if iter_color == True:
+	for i in range(n):  # iterations of fractal
+		window.fill((0, 0, 0))
+		if iter_color:
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 			t.setColor(color)
 
-		t.move(dist) #initial step before rotation
-		for s in steps: #number of step for given iteration
+		t.move(dist)  # initial step before rotation
+		for s in steps:  # number of step for given iteration
 			t.rotateBy(s*90)
 			t.move(dist)
 			pygame.display.flip()
@@ -77,13 +128,14 @@ def dragon(x_start, y_start, in_dist, niter, in_window, in_color, iter_color):
 				else:
 					pass
 
-		t.setPos(x_start, y_start) #move back to start
-		angle = angle + 45 #rotate start angle by 45
+		t.setPos(x_start, y_start)  # move back to start
+		angle = angle + 45  # rotate start angle by 45
 		t.setAngle(angle)
 		tmp_steps = [k*-1 for k in steps[::-1]]
-		steps = steps[:] + [-1] + tmp_steps[:] #update new steps
-		dist = dist/math.sqrt(2) #scale down by sqrt(2)
-		time.sleep(0.5)	
+		steps = steps[:] + [-1] + tmp_steps[:]  # update new steps
+		dist = dist/math.sqrt(2)  # scale down by sqrt(2)
+		time.sleep(0.5)
+
 
 def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_color):
 	"""square koch curve (quadratic type 1)"""
@@ -95,8 +147,8 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_col
 	pattern = steps[:]
 	n = niter
 	for i in range(n):
-		window.fill((0,0,0))
-		if iter_color == True:
+		window.fill((0, 0, 0))
+		if iter_color:
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 			t.setColor(color)
 
@@ -124,6 +176,7 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_col
 		dist = float(dist)/3.
 		time.sleep(.5)
 
+
 def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_color):
 	"""standard koch curve"""
 	window = in_window
@@ -134,8 +187,8 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_color)
 	pattern = steps[:]
 	n = niter
 	for i in range(n):
-		window.fill((0,0,0))
-		if iter_color == True:
+		window.fill((0, 0, 0))
+		if iter_color:
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 			t.setColor(color)
 
@@ -167,14 +220,15 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_color)
 		dist = float(dist)/3.
 		time.sleep(.5)
 
+
 def run(*args):
 	"""this runs the drawing methods, called from run button in gui"""
-	pygame.init() #initialize pygame
-	window = pygame.display.set_mode((640,480)) #set display window
+	pygame.init()  # initialize pygame
+	window = pygame.display.set_mode((640, 480))  # set display window
 
 	# Set options #
-	if iter_rand_color.get() == False:
-		if rand_color.get() == True:
+	if not iter_rand_color.get():
+		if rand_color.get():
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 		else:
 			if (red.get() != '' and green.get() != '' and blue.get() != ''):
@@ -182,11 +236,10 @@ def run(*args):
 					if (int(red.get()) > -1 and int(green.get()) > -1 and int(blue.get()) > -1):
 						color = (int(red.get()), int(green.get()), int(blue.get()))
 			else:
-				color=(255, 255, 255)
+				color = (255, 255, 255)
 
-
-	elif iter_rand_color.get() == True:
-		color=(255,255,255)
+	elif iter_rand_color.get():
+		color = (255, 255, 255)
 
 	if fracvar.get() == 'Dragon':
 		dragon(200, 300, 200, 17, window, color, iter_rand_color.get())
@@ -194,7 +247,8 @@ def run(*args):
 		kochcurve(20, 400, 200, 6, window, color, iter_rand_color.get())
 	elif fracvar.get() == 'Koch sqr':
 		sqrkochcurve(20, 400, 200, 6, window, color, iter_rand_color.get())
-
+	elif fracvar.get() == "Sierpinski (Pascals triangle)":
+		pascal_sierpinski(96, window, color, iter_rand_color.get())
 
 
 def options(*args):
@@ -206,72 +260,71 @@ def options(*args):
 		pass
 	elif s == 'Koch sqr':
 		pass
-
-
-
+	elif s == "Sierpinski (Pascals triangle)":
+		pass
 ## Initialization and stuff ##
-
-root = Tkinter.Tk()
-fractals = ('Dragon', 'Koch', 'Koch sqr') #list of fractals available
+root = tkinter.Tk()
+fractals = ('Dragon', 'Koch', 'Koch sqr', "Sierpinski (Pascals triangle)")  # list of fractals available
 
 # Fractal independent options, such as color #
-color = (255, 255, 255) #default color
-red = Tkinter.StringVar()
-blue = Tkinter.StringVar()
-green = Tkinter.StringVar()
+color = (255, 255, 255)  # default color
+red = tkinter.StringVar()
+blue = tkinter.StringVar()
+green = tkinter.StringVar()
 
 global rand_color
-rand_color = Tkinter.BooleanVar()
+rand_color = tkinter.BooleanVar()
 
 global iter_rand_color
-iter_rand_color = Tkinter.BooleanVar()
+iter_rand_color = tkinter.BooleanVar()
 
 ## GUI ##
-root.title("Max magiska laada")
+root.title("Fractal Step")
 
-mainframe = ttk.Frame(root, padding="3 3 12 12")
+mainframe = tkinter.ttk.Frame(root, padding="3 3 12 12")
 mainframe.grid(column=0, row=0, sticky="n, w, e, s")
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 # Options section #
-optframe = ttk.Frame(mainframe, padding="3 3 12 12")
+optframe = tkinter.ttk.Frame(mainframe, padding="3 3 12 12")
 optframe.grid(column=0, row=1, sticky="n, w")
 optframe.columnconfigure(0, weight=1)
 optframe.rowconfigure(0, weight=1)
 
-red_entry = ttk.Entry(optframe, textvariable=red, width=3)
+red_entry = tkinter.ttk.Entry(optframe, textvariable=red, width=3)
 red_entry.grid(column=1, row=0, sticky='w')
-red_label = ttk.Label(optframe, text='R:').grid(column=0, row=0, sticky='w')
+red_label = tkinter.ttk.Label(optframe, text='R:').grid(column=0, row=0, sticky='w')
 
-green_entry = ttk.Entry(optframe, textvariable=green, width=3)
+green_entry = tkinter.ttk.Entry(optframe, textvariable=green, width=3)
 green_entry.grid(column=3, row=0, sticky='w')
-green_label = ttk.Label(optframe, text='G:').grid(column=2, row=0, sticky='w')
+green_label = tkinter.ttk.Label(optframe, text='G:').grid(column=2, row=0, sticky='w')
 
-blue_entry = ttk.Entry(optframe, textvariable=blue, width=3)
+blue_entry = tkinter.ttk.Entry(optframe, textvariable=blue, width=3)
 blue_entry.grid(column=5, row=0, sticky='w')
-blue_label = ttk.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
+blue_label = tkinter.ttk.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
 
 #choose random color
-random_color_checkbox = ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
+random_color_checkbox = tkinter.ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
 random_color_checkbox.grid(column=6, row=0, sticky='w')
 
 #choose random color each iteration
-iter_random_color_checkbox = ttk.Checkbutton(optframe, text="Each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
+iter_random_color_checkbox = tkinter.ttk.Checkbutton(optframe, text="Each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
 iter_random_color_checkbox.grid(column=7, row=0, sticky='w')
 
 
 # Run section #
-fracvar = Tkinter.StringVar()
-frac = ttk.Combobox(mainframe, textvariable=fracvar)
+fracvar = tkinter.StringVar()
+frac = tkinter.ttk.Combobox(mainframe, textvariable=fracvar)
 frac.grid(column=0, row=0, sticky='w')
 frac['values'] = fractals
 frac['state'] = 'readonly'
 frac.bind('<<ComboboxSelected>>', options)
 frac.current(0)
-ttk.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
+tkinter.ttk.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
 
-for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
+for child in mainframe.winfo_children():
+	child.grid_configure(padx=5, pady=5)
 
 ## Main stuff ##
 
