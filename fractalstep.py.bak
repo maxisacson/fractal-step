@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import pygame
 import math
 import time
@@ -281,50 +282,51 @@ iter_rand_color = Tkinter.BooleanVar()
 ## GUI ##
 root.title("Fractal Step")
 
-mainframe = Tkinter.ttk.Frame(root, padding="3 3 12 12")
+mainframe = Tkinter.Frame(root, padding="3 3 12 12")
 mainframe.grid(column=0, row=0, sticky="n, w, e, s")
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 # Options section #
-optframe = Tkinter.ttk.Frame(mainframe, padding="3 3 12 12")
+optframe = Tkinter.Frame(mainframe, padding="3 3 12 12")
 optframe.grid(column=0, row=1, sticky="n, w")
 optframe.columnconfigure(0, weight=1)
 optframe.rowconfigure(0, weight=1)
 
-red_entry = Tkinter.ttk.Entry(optframe, textvariable=red, width=3)
+red_entry = Tkinter.Entry(optframe, textvariable=red, width=3)
 red_entry.grid(column=1, row=0, sticky='w')
-red_label = Tkinter.ttk.Label(optframe, text='R:').grid(column=0, row=0, sticky='w')
+red_label = Tkinter.Label(optframe, text='R:').grid(column=0, row=0, sticky='w')
 
-green_entry = Tkinter.ttk.Entry(optframe, textvariable=green, width=3)
+green_entry = Tkinter.Entry(optframe, textvariable=green, width=3)
 green_entry.grid(column=3, row=0, sticky='w')
-green_label = Tkinter.ttk.Label(optframe, text='G:').grid(column=2, row=0, sticky='w')
+green_label = Tkinter.Label(optframe, text='G:').grid(column=2, row=0, sticky='w')
 
-blue_entry = Tkinter.ttk.Entry(optframe, textvariable=blue, width=3)
+blue_entry = Tkinter.Entry(optframe, textvariable=blue, width=3)
 blue_entry.grid(column=5, row=0, sticky='w')
-blue_label = Tkinter.ttk.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
+blue_label = Tkinter.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
 
 #choose random color
-random_color_checkbox = Tkinter.ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
+random_color_checkbox = Tkinter.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
 random_color_checkbox.grid(column=6, row=0, sticky='w')
 
 #choose random color each iteration
-iter_random_color_checkbox = Tkinter.ttk.Checkbutton(optframe, text="Each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
+iter_random_color_checkbox = Tkinter.Checkbutton(optframe, text="Each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
 iter_random_color_checkbox.grid(column=7, row=0, sticky='w')
 
 
 # Run section #
 fracvar = Tkinter.StringVar()
-frac = Tkinter.ttk.Combobox(mainframe, textvariable=fracvar)
+frac = Tkinter.Combobox(mainframe, textvariable=fracvar)
 frac.grid(column=0, row=0, sticky='w')
 frac['values'] = fractals
 frac['state'] = 'readonly'
 frac.bind('<<ComboboxSelected>>', options)
 frac.current(0)
-Tkinter.ttk.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
+Tkinter.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
 
 for child in mainframe.winfo_children():
 	child.grid_configure(padx=5, pady=5)
 
 ## Main stuff ##
-root.mainloop()
+print(six.PY2, six.PY3)
+# root.mainloop()
