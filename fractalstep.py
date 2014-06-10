@@ -1,12 +1,14 @@
 import pygame
 import math
 import time
+import random
+import six
 import Tkinter as tkinter  # py2.7
 import ttk  # py2.7
+import tkColorChooser  # py2.7
 # import tkinter  # py3.4
 # import tkinter.ttk as ttk  # py3.4
-# import tkinter.colorchooser  # py3.4
-import random
+# import tkinter.colorchooser as tkColorChooser  # py3.4
 
 
 class turtle(object):
@@ -93,7 +95,6 @@ def pascal_sierpinski(niter, in_window, in_color, iter_color, x_start=2, y_start
 		for ele in row:
 			if ele != ".":
 				t.draw_circle(2)
-				pygame.display.flip()
 			if iter_color and ele != ".":
 				color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 				t.setColor(color)
@@ -116,6 +117,8 @@ def pascal_sierpinski(niter, in_window, in_color, iter_color, x_start=2, y_start
 					continue
 				else:
 					break
+		pygame.display.flip()
+		pygame.time.wait(100)
 		y_start += line_height
 		x_start = 2
 		t.setPos(x_start, y_start)
@@ -297,7 +300,8 @@ def run(*args):
 	elif fracvar.get() == 'Koch sqr':
 		sqrkochcurve(20, 400, 200, 6, window, color, iter_rand_color.get())
 	elif fracvar.get() == "Sierpinski (Pascals triangle)":
-		pascal_sierpinski(96, window, color, iter_rand_color.get())
+		pascal_sierpinski(96, pygame.display.set_mode((580, 480)),
+							color, iter_rand_color.get())
 
 
 def options(*args):
@@ -321,7 +325,7 @@ def color1():
 	global colorcho
 	global colorchohex
 	global collab
-	fetched = tkinter.colorchooser.askcolor()
+	fetched = tkColorChooser.askcolor()
 	colorcho = fetched[0]
 	colorchohex = fetched[1]
 	collab.configure(bg=colorchohex)
@@ -382,6 +386,7 @@ ttk.Button(optframe, text="Choose color", command=color1).grid(column=0, row=0, 
 
 for child in mainframe.winfo_children():
 	child.grid_configure(padx=5, pady=5)
+print(six.PY2, six.PY3)
 
 ## Main stuff ##
 root.mainloop()
