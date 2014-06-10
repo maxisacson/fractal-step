@@ -2,13 +2,12 @@ import pygame
 import math
 import time
 import random
-import six
-import Tkinter as tkinter  # py2.7
-import ttk  # py2.7
-import tkColorChooser  # py2.7
-# import tkinter  # py3.4
-# import tkinter.ttk as ttk  # py3.4
-# import tkinter.colorchooser as tkColorChooser  # py3.4
+# import Tkinter as tkinter  # py2.7
+# import ttk  # py2.7
+# import tkColorChooser  # py2.7
+import tkinter  # py3.4
+import tkinter.ttk as ttk  # py3.4
+import tkinter.colorchooser as tkColorChooser  # py3.4
 
 
 class turtle(object):
@@ -56,6 +55,70 @@ class turtle(object):
 
 	def draw_circle(self, radius):
 		pygame.draw.circle(self.window, self.color, (self.x, self.y), radius)
+
+
+def buffons_needle(niter,
+					in_window, in_color, iter_color,
+					in_needle_length, in_line_sep):
+	"""buffons needle simulation"""
+	window = in_window
+	color = in_color
+	n = niter
+	initial_line_sep = 50 if not in_line_sep else int(in_line_sep)
+	line_sep = initial_line_sep
+	lineheights = []
+	needle_length = 45 if not in_needle_length else int(in_needle_length)
+	paused = False
+	t = turtle(window, 0, line_sep, color)
+	t.setAngle(0)
+	t.setColor(color)
+	while line_sep < 480:
+		t.move(640)
+		lineheights.append(line_sep)
+		line_sep += initial_line_sep
+		t.setPos(0, line_sep)
+	pygame.display.flip()
+	num_crossed = 0
+	pifloat_str = ""
+	for N in range(n):
+		if iter_color:
+			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+			t.setColor(color)
+		else:
+			t.setColor(color)
+		while True:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					pygame.quit()
+					return
+				elif event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE:
+						pygame.quit()
+						return
+					elif event.key == pygame.K_SPACE:
+						paused = not paused
+				else:
+					pass
+			if paused:
+				continue
+			else:
+				break
+		xpos = random.randint(needle_length, 640-needle_length)
+		ypos = random.randint(needle_length, 480-needle_length)
+		needle_angle = random.randint(0, 360)
+		t.setAngle(needle_angle)
+		xtip = xpos - float(needle_length)/2.0*math.cos(t.angle)
+		ytip = ypos - float(needle_length)/2.0*math.sin(t.angle)
+		t.setPos(xtip, ytip)
+		shortest_len_to_line = min([abs(ypos-l) for l in lineheights])
+		if shortest_len_to_line <= abs(float(needle_length)/2.0*math.sin(t.angle)):
+			num_crossed += 1
+		t.move(needle_length)
+		if num_crossed:
+			pifloat_str = str(2*(float(N+1)*float(needle_length))/(float(num_crossed)*float(initial_line_sep)))
+		pygame.display.set_caption(pifloat_str)
+		pygame.display.flip()
+		pygame.time.wait(50)
 
 
 def pascal_sierpinski(niter, in_window, in_color, iter_color, x_start=2, y_start=2):
@@ -302,6 +365,9 @@ def run(*args):
 	elif fracvar.get() == "Sierpinski (Pascals triangle)":
 		pascal_sierpinski(96, pygame.display.set_mode((580, 480)),
 							color, iter_rand_color.get())
+	elif fracvar.get() == "Buffons needle":
+		buffons_needle(1000, pygame.display.set_mode((640, 480)),
+							color, iter_rand_color.get(), nl.get(), ls.get())
 
 
 def options(*args):
@@ -315,6 +381,13 @@ def options(*args):
 		pass
 	elif s == "Sierpinski (Pascals triangle)":
 		pass
+	elif s == "Buffons needle":
+		global nl
+		global ls
+		ttk.Label(mainframe, text="Needle length: ").grid(column=1, row=0, sticky="w")
+		ttk.Entry(mainframe, textvariable=nl, width=3).grid(column=2, row=0, sticky="w")
+		ttk.Label(mainframe, text="Line sep: ").grid(column=3, row=0, sticky="w")
+		ttk.Entry(mainframe, textvariable=ls, width=3).grid(column=4, row=0, sticky="w")
 
 
 def quit():
@@ -333,9 +406,13 @@ def color1():
 
 ## Initialization and stuff ##
 root = tkinter.Tk()
-fractals = ('Dragon', 'Koch', 'Koch sqr', "Sierpinski (Pascals triangle)")  # list of fractals available
+fractals = ('Dragon', 'Koch', 'Koch sqr', "Sierpinski (Pascals triangle)", "Buffons needle")  # list of fractals available
 
 # Fractal independent options, such as color #
+global nl
+global ls
+nl = tkinter.StringVar()
+ls = tkinter.StringVar()
 global rand_color
 rand_color = tkinter.BooleanVar()
 
@@ -352,7 +429,7 @@ mainframe.rowconfigure(0, weight=1)
 
 # Options section #
 optframe = ttk.Frame(mainframe, padding="3 3 12 12")
-optframe.grid(column=0, row=1, sticky="n, w")
+optframe.grid(column=0, row=1, sticky="n, w", columnspan=5)
 optframe.columnconfigure(0, weight=1)
 optframe.rowconfigure(0, weight=1)
 
@@ -364,11 +441,11 @@ collab.grid(column=1, row=0, sticky="w")
 
 #choose random color
 random_color_checkbox = ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
-random_color_checkbox.grid(column=6, row=0, sticky='w')
+random_color_checkbox.grid(column=2, row=0, sticky='w')
 
 #choose random color each iteration
 iter_random_color_checkbox = ttk.Checkbutton(optframe, text="Change each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
-iter_random_color_checkbox.grid(column=7, row=0, sticky='w')
+iter_random_color_checkbox.grid(column=3, row=0, sticky='w')
 
 
 # Run section #
@@ -379,14 +456,13 @@ frac['values'] = fractals
 frac['state'] = 'readonly'
 frac.bind('<<ComboboxSelected>>', options)
 frac.current(0)
-ttk.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
-ttk.Button(mainframe, text='Exit', command=quit).grid(column=1, row=1, sticky='w')
+ttk.Button(mainframe, text='Go!', command=run).grid(column=5, row=0, sticky='w')
+ttk.Button(mainframe, text='Exit', command=quit).grid(column=5, row=1, sticky='w')
 ttk.Button(optframe, text="Choose color", command=color1).grid(column=0, row=0, sticky="w")
 
 
 for child in mainframe.winfo_children():
 	child.grid_configure(padx=5, pady=5)
-print(six.PY2, six.PY3)
 
 ## Main stuff ##
 root.mainloop()

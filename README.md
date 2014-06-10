@@ -37,4 +37,4 @@ Fractals to add
 Other cool stuff to add
 -----------------------
 
-- Computation of pi (Leibniz vs. Monte Carlo, etc.)
+- Computation of pi (Leibniz vs. Monte Carlo, etc.) ~~Buffon's needle~~
