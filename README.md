@@ -12,8 +12,8 @@ TODO
 - ~~Add option to set random color~~
 - ~~Add option to set random color for each iteration~~ Implement this in a better way
 - Add option to set background color maybe
-- Add exit button
-- Add pause button
+- ~~Add exit button~~
+- ~~Add pause button~~
 - Add "make your own fractal" feature using L-systems
 - Add manual stepping thingy
 - Add options to set if the program should stop after last iteration, or start over with the first

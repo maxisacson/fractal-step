@@ -1,9 +1,12 @@
 import pygame
 import math
 import time
-import Tkinter
+import Tkinter as tkinter  # py2.7
+import ttk  # py2.7
+# import tkinter  # py3.4
+# import tkinter.ttk as ttk  # py3.4
+# import tkinter.colorchooser  # py3.4
 import random
-import six
 
 
 class turtle(object):
@@ -84,6 +87,7 @@ def pascal_sierpinski(niter, in_window, in_color, iter_color, x_start=2, y_start
 	for x, row in enumerate(irtsap):
 		irtsap[x] = row[::-1]
 	pygame.display.flip()
+	paused = False
 	for x, row in enumerate(pastri):
 		row += irtsap[x]
 		for ele in row:
@@ -95,6 +99,23 @@ def pascal_sierpinski(niter, in_window, in_color, iter_color, x_start=2, y_start
 				t.setColor(color)
 			x_start += char_width
 			t.setPos(x_start, y_start)
+			while True:
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+						return
+					elif event.type == pygame.KEYDOWN:
+						if event.key == pygame.K_ESCAPE:
+							pygame.quit()
+							return
+						elif event.key == pygame.K_SPACE:
+							paused = not paused
+					else:
+						pass
+				if paused:
+					continue
+				else:
+					break
 		y_start += line_height
 		x_start = 2
 		t.setPos(x_start, y_start)
@@ -111,23 +132,33 @@ def dragon(x_start, y_start, in_dist, niter, in_window, in_color, iter_color):
 	steps = [-1]
 	n = niter
 	for i in range(n):  # iterations of fractal
-		window.fill((0, 0, 0))
+		window.fill((25, 25, 25))
 		if iter_color:
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 			t.setColor(color)
-
+		paused = False
 		t.move(dist)  # initial step before rotation
 		for s in steps:  # number of step for given iteration
 			t.rotateBy(s*90)
 			t.move(dist)
 			pygame.display.flip()
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					return
+			while True:
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+						return
+					elif event.type == pygame.KEYDOWN:
+						if event.key == pygame.K_ESCAPE:
+							pygame.quit()
+							return
+						elif event.key == pygame.K_SPACE:
+							paused = not paused
+					else:
+						pass
+				if paused:
+					continue
 				else:
-					pass
-
+					break
 		t.setPos(x_start, y_start)  # move back to start
 		angle = angle + 45  # rotate start angle by 45
 		t.setAngle(angle)
@@ -147,22 +178,33 @@ def sqrkochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_col
 	pattern = steps[:]
 	n = niter
 	for i in range(n):
-		window.fill((0, 0, 0))
+		window.fill((25, 25, 25))
 		if iter_color:
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 			t.setColor(color)
-
 		t.move(dist)
+		paused = False
 		for s in steps:
 			t.rotateBy(s*90)
 			t.move(dist)
 			pygame.display.flip()
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					return
+			while True:
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+						return
+					elif event.type == pygame.KEYDOWN:
+						if event.key == pygame.K_ESCAPE:
+							pygame.quit()
+							return
+						elif event.key == pygame.K_SPACE:
+							paused = not paused
+					else:
+						pass
+				if paused:
+					continue
 				else:
-					pass
+					break
 
 		t.setPos(x_start, y_start)
 		t.setAngle(0)
@@ -187,38 +229,50 @@ def kochcurve(x_start, y_start, in_dist, niter, in_window, in_color, iter_color)
 	pattern = steps[:]
 	n = niter
 	for i in range(n):
-		window.fill((0, 0, 0))
+		window.fill((25, 25, 25))
 		if iter_color:
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 			t.setColor(color)
-
 		t.move(dist)
+		paused = False
 		for s in steps:
 			if s == -1:
 				t.rotateBy(s*120)
 			elif s == 1:
 				t.rotateBy(s*60)
-
 			t.move(dist)
 			pygame.display.flip()
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					return
+			while True:
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+						return
+					elif event.type == pygame.KEYDOWN:
+						if event.key == pygame.K_ESCAPE:
+							pygame.quit()
+							return
+						elif event.key == pygame.K_SPACE:
+							paused = not paused
+					else:
+						pass
+				if paused:
+					continue
 				else:
-					pass
-
+					break
 		t.setPos(x_start, y_start)
 		t.setAngle(0)
 		tmp_steps = []
 		for p in pattern:
 			tmp_steps = tmp_steps[:] + steps[:] + [p]
-
 		tmp_steps = tmp_steps[:] + steps[:]
-
 		steps = tmp_steps[:]
 		dist = float(dist)/3.
 		time.sleep(.5)
+
+global colorcho
+global colorchohex
+colorcho = (255, 255, 255)
+colorchohex = "#ffffff"
 
 
 def run(*args):
@@ -231,12 +285,7 @@ def run(*args):
 		if rand_color.get():
 			color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 		else:
-			if (red.get() != '' and green.get() != '' and blue.get() != ''):
-				if (int(red.get()) < 256 and int(green.get()) < 256 and int(blue.get()) < 256):
-					if (int(red.get()) > -1 and int(green.get()) > -1 and int(blue.get()) > -1):
-						color = (int(red.get()), int(green.get()), int(blue.get()))
-			else:
-				color = (255, 255, 255)
+			color = colorcho
 
 	elif iter_rand_color.get():
 		color = (255, 255, 255)
@@ -262,66 +311,74 @@ def options(*args):
 		pass
 	elif s == "Sierpinski (Pascals triangle)":
 		pass
+
+
+def quit():
+	root.quit()
+
+
+def color1():
+	global colorcho
+	global colorchohex
+	global collab
+	fetched = tkinter.colorchooser.askcolor()
+	colorcho = fetched[0]
+	colorchohex = fetched[1]
+	collab.configure(bg=colorchohex)
+	collab.grid(column=1, row=0, sticky="w")
+
 ## Initialization and stuff ##
-root = Tkinter.Tk()
+root = tkinter.Tk()
 fractals = ('Dragon', 'Koch', 'Koch sqr', "Sierpinski (Pascals triangle)")  # list of fractals available
 
 # Fractal independent options, such as color #
-color = (255, 255, 255)  # default color
-red = Tkinter.StringVar()
-blue = Tkinter.StringVar()
-green = Tkinter.StringVar()
-
 global rand_color
-rand_color = Tkinter.BooleanVar()
+rand_color = tkinter.BooleanVar()
 
 global iter_rand_color
-iter_rand_color = Tkinter.BooleanVar()
+iter_rand_color = tkinter.BooleanVar()
 
 ## GUI ##
 root.title("Fractal Step")
 
-mainframe = Tkinter.ttk.Frame(root, padding="3 3 12 12")
+mainframe = ttk.Frame(root, padding="3 3 12 12")
 mainframe.grid(column=0, row=0, sticky="n, w, e, s")
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 # Options section #
-optframe = Tkinter.ttk.Frame(mainframe, padding="3 3 12 12")
+optframe = ttk.Frame(mainframe, padding="3 3 12 12")
 optframe.grid(column=0, row=1, sticky="n, w")
 optframe.columnconfigure(0, weight=1)
 optframe.rowconfigure(0, weight=1)
 
-red_entry = Tkinter.ttk.Entry(optframe, textvariable=red, width=3)
-red_entry.grid(column=1, row=0, sticky='w')
-red_label = Tkinter.ttk.Label(optframe, text='R:').grid(column=0, row=0, sticky='w')
+# Color preview frame #
+global collab
+collab = tkinter.Label(optframe, bg=colorchohex, width=5)
+collab.grid(column=1, row=0, sticky="w")
 
-green_entry = Tkinter.ttk.Entry(optframe, textvariable=green, width=3)
-green_entry.grid(column=3, row=0, sticky='w')
-green_label = Tkinter.ttk.Label(optframe, text='G:').grid(column=2, row=0, sticky='w')
-
-blue_entry = Tkinter.ttk.Entry(optframe, textvariable=blue, width=3)
-blue_entry.grid(column=5, row=0, sticky='w')
-blue_label = Tkinter.ttk.Label(optframe, text='B:').grid(column=4, row=0, sticky='w')
 
 #choose random color
-random_color_checkbox = Tkinter.ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
+random_color_checkbox = ttk.Checkbutton(optframe, text="Choose random color", variable=rand_color, onvalue=True, offvalue=False)
 random_color_checkbox.grid(column=6, row=0, sticky='w')
 
 #choose random color each iteration
-iter_random_color_checkbox = Tkinter.ttk.Checkbutton(optframe, text="Each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
+iter_random_color_checkbox = ttk.Checkbutton(optframe, text="Change each iteration?", variable=iter_rand_color, onvalue=True, offvalue=False)
 iter_random_color_checkbox.grid(column=7, row=0, sticky='w')
 
 
 # Run section #
-fracvar = Tkinter.StringVar()
-frac = Tkinter.ttk.Combobox(mainframe, textvariable=fracvar)
+fracvar = tkinter.StringVar()
+frac = ttk.Combobox(mainframe, textvariable=fracvar)
 frac.grid(column=0, row=0, sticky='w')
 frac['values'] = fractals
 frac['state'] = 'readonly'
 frac.bind('<<ComboboxSelected>>', options)
 frac.current(0)
-Tkinter.ttk.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
+ttk.Button(mainframe, text='Go!', command=run).grid(column=1, row=0, sticky='w')
+ttk.Button(mainframe, text='Exit', command=quit).grid(column=1, row=1, sticky='w')
+ttk.Button(optframe, text="Choose color", command=color1).grid(column=0, row=0, sticky="w")
+
 
 for child in mainframe.winfo_children():
 	child.grid_configure(padx=5, pady=5)
