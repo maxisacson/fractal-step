@@ -28,7 +28,7 @@ Fractals to add
 
 - Mandelbrot set
 - Julia set
-- Sierpinski gasket (L-system)
+- Sierpinski gasket (L-system) ~~Using Pascals' triangle~~
 - Fractal plant
 - Cantor dust (maybe boring, but still a pretty fundamental fractal)
 - Newton fractals
