@@ -2,12 +2,15 @@ import pygame
 import math
 import time
 import random
-# import Tkinter as tkinter  # py2.7
-# import ttk  # py2.7
-# import tkColorChooser  # py2.7
-import tkinter  # py3.4
-import tkinter.ttk as ttk  # py3.4
-import tkinter.colorchooser as tkColorChooser  # py3.4
+try:
+	import Tkinter as tkinter  # py2.7
+	import ttk  # py2.7
+	import tkColorChooser  # py2.7
+except ImportError:
+	import tkinter  # py3.4
+	import tkinter.ttk as ttk  # py3.4
+	import tkinter.colorchooser as tkColorChooser  # py3.4
+
 
 
 class turtle(object):
